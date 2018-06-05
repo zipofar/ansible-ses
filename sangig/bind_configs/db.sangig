@@ -1,0 +1,20 @@
+;
+; BIND data file for local loopback interface
+;
+$TTL	604800
+@	IN	SOA	ns1.sangig. root.localhost.sangig. (
+			      3		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+@	IN	NS	ns1.sangig.
+@	IN	A	127.0.0.1
+
+ns1			IN	A	10.0.2.101
+localhost	IN	A	127.0.0.1
+kodirovka	IN	A	10.0.2.2
+server		IN 	A	10.0.2.101
+vpnrouter	IN	A	10.0.2.1
+sangig06	IN	A	10.0.2.3

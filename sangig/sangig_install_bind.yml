@@ -1,0 +1,29 @@
+- hosts: sangig
+  tasks:
+    - name: install bind9
+      apt: name=bind9 state=present
+      become: yes
+
+    - name: install bind9utils
+      apt: name=bind9utils state=present
+      become: yes
+
+    - name: copy bind conf
+      copy: 
+        src: bind_configs/{{ item }}
+        dest: /etc/bind/
+      with_items:
+        - db.10.0.2
+        - db.127
+        - db.255
+        - db.local
+        - db.sangig
+        - named.conf.default-zones
+        - named.conf.options
+      become: yes
+
+    - name: restart bind
+      service:
+        name: bind9
+        state: restarted
+      become: yes

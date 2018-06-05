@@ -1,0 +1,50 @@
+- hosts: sangig 
+  tasks:
+    - name: install rsnapshot
+      apt: name=rsnapshot state=present update_cache=yes
+      become: yes
+
+    - name: copy rsnapshot.conf.j2 to /etc/rsnapshot.conf
+      template:
+        src: rsnapshot_configs/rsnapshot.conf.j2
+        dest: /etc/rsnapshot.conf
+        owner: root
+        group: root
+        mode: 0644
+      become: yes
+
+    - name: copy rsnapshot.j2 to /etc/cron.d/rsnapshot (cron task)
+      template:
+        src: rsnapshot_configs/rsnapshot.j2
+        dest: /etc/cron.d/rsnapshot
+        owner: root
+        group: root
+        mode: 0644
+      become: yes
+
+    - name: copy checkMountPoints.j2 to /etc/cron.hourly/checkMountPoints (cron task)
+      template:
+        src: rsnapshot_configs/checkMountPoints.j2
+        dest: /etc/cron.hourly/checkMountPoints
+        owner: root
+        group: root
+        mode: 0755
+      become: yes
+
+    - name: create dir
+      file:
+        path: /mnt/sangig066/
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+      become: yes
+
+    - name: create dir
+      file:
+        path: /mnt/sangig06/
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+      become: yes

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+ar[0]="/mnt/sangig06/"
+
+shares[0]="mount -t cifs //sangig06/Desktop /mnt/sangig06 -o username=support,password=eeprom,sec=ntlm,vers=2.1,ro"
+
+INDEX=0
+for item in ${ar[*]}
+do
+    if mountpoint -q "$item"
+    then
+        echo "$item - mounted" >> /tmp/check_mounted.txt
+    else
+        echo "$item - unmounted" >> /tmp/check_mounted.txt
+        $shares[${INDEX}]
+    fi
+    INDEX=$((INDEX++))
+done
+
