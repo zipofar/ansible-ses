@@ -28,7 +28,7 @@
 
     - name: copy smb.conf to /etc/samba/
       template:
-        src: samba_configs/smb.conf.j2
+        src: templates/samba_configs/smb.conf.j2
         dest: /etc/samba/smb.conf
         owner: root
         group: root
