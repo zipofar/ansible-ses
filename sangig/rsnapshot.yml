@@ -6,7 +6,7 @@
 
     - name: copy rsnapshot.conf.j2 to /etc/rsnapshot.conf
       template:
-        src: rsnapshot_configs/rsnapshot.conf.j2
+        src: templates/rsnapshot_configs/rsnapshot.conf.j2
         dest: /etc/rsnapshot.conf
         owner: root
         group: root
@@ -15,7 +15,7 @@
 
     - name: copy rsnapshot.j2 to /etc/cron.d/rsnapshot (cron task)
       template:
-        src: rsnapshot_configs/rsnapshot.j2
+        src: templates/rsnapshot_configs/rsnapshot.j2
         dest: /etc/cron.d/rsnapshot
         owner: root
         group: root
@@ -24,7 +24,7 @@
 
     - name: copy checkMountPoints.j2 to /etc/cron.hourly/checkMountPoints (cron task)
       template:
-        src: rsnapshot_configs/checkMountPoints.j2
+        src: templates/rsnapshot_configs/checkMountPoints.j2
         dest: /etc/cron.hourly/checkMountPoints
         owner: root
         group: root

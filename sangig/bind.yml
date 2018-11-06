@@ -10,7 +10,7 @@
 
     - name: copy bind conf
       copy: 
-        src: bind_configs/{{ item }}
+        src: templates/bind_configs/{{ item }}
         dest: /etc/bind/
       with_items:
         - db.10.0.2
