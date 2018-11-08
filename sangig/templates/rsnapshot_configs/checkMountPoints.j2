@@ -1,8 +1,12 @@
 #!/bin/bash
 
 ar[0]="/mnt/sangig06/"
+ar[1]="/mnt/sangig066/"
+ar[2]="/mnt/10.0.2.5/"
 
 shares[0]="mount -t cifs //sangig06/Desktop /mnt/sangig06 -o username=support,password=eeprom,sec=ntlm,vers=2.1,ro"
+shares[1]="mount -t cifs //sangig066/DESCTOP /mnt/sangig066 -o username=support,password=eeprom,sec=ntlm,vers=1.0,ro"
+shares[2]="mount -t cifs //10.0.2.5/DESCTOP /mnt/10.0.2.5 -o username=support,password=eeprom,sec=ntlm,vers=1.0,ro"
 
 INDEX=0
 for item in ${ar[*]}

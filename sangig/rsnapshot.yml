@@ -48,3 +48,12 @@
         group: root
         mode: 0755
       become: yes
+
+    - name: create dir
+      file:
+        path: /mnt/10.0.2.5/
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+      become: yes
