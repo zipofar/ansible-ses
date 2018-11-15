@@ -1,0 +1,5 @@
+- hosts: sangig 
+  tasks:
+    - name: install rsnapshot
+      apt: name=rsnapshot state=present update_cache=yes
+      become: yes

@@ -1,0 +1,34 @@
+#!/usr/bin/env php
+<?php
+
+$logPath = "/var/log/sangig.log";
+$makeLog = function ($message) use ($logPath) {
+    $dateLog = date('Y-m-d H:i:s');
+    file_put_contents($logPath, "[$dateLog]:$message".PHP_EOL, FILE_APPEND);
+};
+
+function isEmptyDir($dir)
+{
+  return (($files = scandir($dir)) && count($files) <= 2);
+}
+
+$mnt = $argv[1] ?? null;
+
+if ($mnt === null) {
+    $makeLog("ERROR:Argument mnt directory not defined");
+    exit(1);
+}
+
+try {
+  if (!is_dir($mnt)) {
+    $makeLog("ERROR:$mnt is not directory");
+    exit(1);
+  }
+  if (isEmptyDir($mnt)) {
+    exit(1);
+  }
+  exit(0);
+} catch (\Throwable $e) {
+    $makeLog($e->getMessage());
+      exit(1);
+}

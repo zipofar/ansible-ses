@@ -1,23 +1,92 @@
-#!/bin/bash
+#!/usr/bin/env php
+<?php
 
-ar[0]="/mnt/sangig06/"
-ar[1]="/mnt/sangig066/"
-ar[2]="/mnt/10.0.2.5/"
+$hosts = [
+    [
+    'hostname' => 'sangig06',
+    'directory' => 'Desktop',
+    'username' => 'support',
+    'password' => 'eeprom',
+    'vers' => '2.1'
+    ],
+    [
+    'hostname' => '10.0.2.2',
+    'directory' => 'DESCTOP',
+    'username' => 'support',
+    'password' => 'eeprom',
+    'vers' => '1.0'
+    ],
+    [
+    'hostname' => '10.0.2.5',
+    'directory' => 'DESCTOP',
+    'username' => 'support',
+    'password' => 'eeprom',
+    'vers' => '1.0'
+    ],
+];
 
-shares[0]="mount -t cifs //sangig06/Desktop /mnt/sangig06 -o username=support,password=eeprom,sec=ntlm,vers=2.1,ro"
-shares[1]="mount -t cifs //sangig066/DESCTOP /mnt/sangig066 -o username=support,password=eeprom,sec=ntlm,vers=1.0,ro"
-shares[2]="mount -t cifs //10.0.2.5/DESCTOP /mnt/10.0.2.5 -o username=support,password=eeprom,sec=ntlm,vers=1.0,ro"
+define('MNT_DIR', 'mnt');
+define('LOG_PATH', '/var/log/sangig.log');
 
-INDEX=0
-for item in ${ar[*]}
-do
-    if mountpoint -q "$item"
-    then
-        echo "$item - mounted" >> /tmp/check_mounted.txt
-    else
-        echo "$item - unmounted" >> /tmp/check_mounted.txt
-        $shares[${INDEX}]
-    fi
-    INDEX=$((INDEX++))
-done
+// return /mnt/10.0.2.2
+function buildMntDirPath ($hostname) {
+    return "/".MNT_DIR."/$hostname";
+};
+
+function makeLog ($message) {
+    $dateLog = date('Y-m-d H:i:s');
+    file_put_contents(LOG_PATH, "[$dateLog]:$message".PHP_EOL, FILE_APPEND);
+};
+
+// return mount -t cifs //sangig06/Desktop /mnt/sangig06 -o username=support,password=eeprom,sec=ntlm,vers=2.1,ro
+function buildMountCommand(array $host)
+{
+    $sharePath = "//{$host['hostname']}/{$host['directory']}";
+    $mntPath = buildMntDirPath($host['hostname']);
+    $username = $host['username'];
+    $password = $host['password'];
+    $vers = $host['vers'];
+    $res = "mount -t cifs $sharePath $mntPath -o username=$username,password=$password,sec=ntlm,vers=$vers,ro";
+    return $res;
+}
+
+function makeMount(array $host)
+{
+    $command = buildMountCommand($host);
+    exec($command, $outcome, $status);
+
+    if ($status === 0) {
+        makeLog("INFO:Mounted {$host['hostname']}");
+    } else {
+        makeLog("ERROR:Can't mount {$host['hostname']}");
+    }
+}
+
+function isMounted($mnt)
+{
+    exec("mountpoint -q {$mnt}", $outcome, $status);
+    return $status === 0 ? true: false;
+}
+
+function hostAvailable($hostname)
+{
+    exec("/bin/ping -c 1 $hostname", $outcome, $status);
+    return $status === 0 ? true: false;
+}
+
+function checkMount($hosts)
+{
+    foreach ($hosts as $host) {
+        $mnt = buildMntDirPath($host['hostname']);
+        if (!isMounted($mnt) && hostAvailable($host['hostname'])) {
+            makeMount($host);
+        }
+    }
+}
+
+try {
+    checkMount($hosts);
+} catch (\Throwable $e) {
+    makeLog("EXCEPTION:{$e->getMessage()}");
+}
 

@@ -7,6 +7,8 @@ cmd_rm		/bin/rm
 cmd_rsync	/usr/bin/rsync
 cmd_logger	/usr/bin/logger
 
+cmd_preexec	/root/preexecCheckMount /mnt/sangig06
+
 retain	daily	1
 
 verbose	2
@@ -18,6 +20,4 @@ lockfile	/var/run/rsnapshot.pid
 # LOCALHOST
 #backup	/home/	localhost/
 backup	/mnt/sangig06	backup/
-backup	/mnt/sangig066	backup/
-backup	/mnt/10.0.2.5	backup/
 

@@ -1,0 +1,23 @@
+config_version	1.2
+
+snapshot_root	/var/sangig_backup/
+
+cmd_cp		/bin/cp
+cmd_rm		/bin/rm
+cmd_rsync	/usr/bin/rsync
+cmd_logger	/usr/bin/logger
+
+cmd_preexec	/root/preexecCheckMount /mnt/10.0.2.5
+
+retain	daily	1
+
+verbose	2
+loglevel	3
+logfile	/var/rsnapshot.log
+
+lockfile	/var/run/rsnapshot.pid
+
+# LOCALHOST
+#backup	/home/	localhost/
+backup	/mnt/10.0.2.5	backup/
+
