@@ -7,7 +7,8 @@ cmd_rm		/bin/rm
 cmd_rsync	/usr/bin/rsync
 cmd_logger	/usr/bin/logger
 
-cmd_preexec	/root/preexecCheckMount /mnt/sangig06
+cmd_preexec	/root/preexecMount mount {{ sangig06_mnt }} {{ sangig06_opt }}
+cmd_postexec /root/postexecUmount umount {{ sangig06_mnt }}
 
 retain	daily	1
 
@@ -18,6 +19,5 @@ logfile	/var/rsnapshot.log
 lockfile	/var/run/rsnapshot.pid
 
 # LOCALHOST
-#backup	/home/	localhost/
-backup	/mnt/sangig06	backup/
+backup	{{ sangig06_mnt }}	backup/
 

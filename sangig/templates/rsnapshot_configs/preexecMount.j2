@@ -1,0 +1,131 @@
+#!/usr/bin/env php
+<?php
+
+define('LOG_PATH', '/var/log/sangig.log');
+define('ACTION_MOUNT', 'mount');
+define('ACTION_UMOUNT', 'umount');
+
+function initArguments($argv)
+{
+    $action = $argv[1] ?? null;
+
+    if ($action === ACTION_UMOUNT) {
+        $options = [
+            'action' => $action,
+            'mnt'    => $argv[2] ?? null,
+        ];
+    } elseif ($action === ACTION_MOUNT) {
+        $options = [
+        'action'    =>  $action,
+        'mnt'       =>  $argv[2] ?? null,
+        'host'      =>  getHost($argv[2]),
+        'directory' =>  $argv[3] ?? null,
+        'username'  =>  $argv[4] ?? null,
+        'password'  =>  $argv[5] ?? null,
+        'vers'      =>  $argv[6] ?? null,
+        ];
+    } else {
+        throw new \Exception ("Action $action not defined");
+    }
+    $optionsHasNull = array_filter($options, function ($item) {
+        return $item === null || $item === '';
+    });
+
+    if (sizeof($optionsHasNull) > 0) {
+        throw new \Exception ("Mount options not defined: ".implode(', ', array_keys($optionsHasNull)));
+    }
+
+    return $options;
+}
+
+function makeLog ($message) {
+    $dateLog = date('Y-m-d H:i:s');
+    file_put_contents(LOG_PATH, "[$dateLog]:[PREEXEC_MOUNT]:$message".PHP_EOL, FILE_APPEND);
+};
+
+function getHost($mnt)
+{
+    // $mnt must be /mnt/[hostname | ip address]
+    return explode('/', $mnt)[2] ?? null;
+}
+
+function isEmptyDir($dir)
+{
+    return (($files = scandir($dir)) && count($files) <= 2);
+}
+
+function runCommand($command)
+{
+    exec($command, $outcome, $status);
+    return $status === 0 ? true: false;
+}
+
+function hostAvailable($hostname)
+{
+    $command = "/bin/ping -c 1 $hostname";
+    return runCommand($command);
+}
+
+function isMounted($mnt)
+{
+    // $mnt must be /mnt/[hostname | ip address]
+    $command = "mountpoint -q {$mnt}";
+    return runCommand($command);
+}
+
+// return mount -t cifs //sangig06/Desktop /mnt/sangig06 -o username=support,password=eeprom,sec=ntlm,vers=2.1,ro
+function buildMountCommand($host, $shareDir, $mnt, $username, $password, $vers)
+{
+    $sharePath = "//$host/$shareDir";
+    $res = "mount -t cifs $sharePath $mnt -o username=$username,password=$password,sec=ntlm,vers=$vers,ro";
+    return $res;
+}
+
+function mount($options)
+{
+
+    if (!is_dir($options['mnt'])) {
+        throw new \Exception ("Mount directory {$options['mnt']} not exists");
+    }
+
+    if (!hostAvailable($options['host'])) {
+        throw new \Exception ("Host {$options['host']} not available");
+    }
+
+    if (isMounted($options['mnt']) && !isEmptyDir($options['mnt'])) {
+        return;
+    }
+    $mountCommand = buildMountCommand(
+        $options['host'],
+        $options['directory'],
+        $options['mnt'],
+        $options['username'],
+        $options['password'],
+        $options['vers']
+    );
+    
+    if (runCommand($mountCommand) === false) {
+        throw new \Exception ("Can not mount host {$options['host']} to mount dir {$options['mnt']}");
+    }
+
+    makeLog("Start backup host {$options['host']} to mount dir {$options['mnt']}");
+}
+
+function umount($options)
+{
+    $command = "umount {$options['mnt']}";
+    if (runCommand($command) === false) {
+        throw new \Exception ("Can not unmount host mount dir {$options['mnt']}");
+    }
+    makeLog("Finish backup host from mount dir {$options['mnt']}");
+}
+
+try {
+    $options = initArguments($argv);
+    call_user_func($options['action'], $options);
+    exit(0);
+} catch (\Throwable $e) {
+    makeLog($e->getMessage());
+    exit(1);
+}
+

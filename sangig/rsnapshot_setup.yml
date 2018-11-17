@@ -28,7 +28,7 @@
         mode: 0644
       become: yes
 
-    - name: Make cron task 
+    - name: Copy cron task 
       template:
         src: templates/rsnapshot_configs/rsnapshot.j2
         dest: /etc/cron.d/rsnapshot
@@ -37,34 +37,16 @@
         mode: 0644
       become: yes
 
-    - name: Make Check MountPoints
+    - name: Copy Pre Exec Mount
       template:
-        src: templates/rsnapshot_configs/checkMountPoints.j2
-        dest: /etc/cron.hourly/checkMountPoints
+        src: templates/rsnapshot_configs/preexecMount.j2
+        dest: /etc/cron.hourly/preexecMount
         owner: root
         group: root
         mode: 0755
       become: yes
 
-    - name: Make check empty dir mount point
-      template:
-        src: templates/rsnapshot_configs/preexecCheckMount.j2
-        dest: /root/preexecCheckMount
-        owner: root
-        group: root
-        mode: 0755
-      become: yes
-
-    - name: create dir
-      file:
-        path: /mnt/10.0.2.2/
-        state: directory
-        owner: root
-        group: root
-        mode: 0755
-      become: yes
-
-    - name: create dir
+    - name: Create dir
       file:
         path: /mnt/sangig06/
         state: directory
@@ -73,7 +55,16 @@
         mode: 0755
       become: yes
 
-    - name: create dir
+    - name: Create dir
+      file:
+        path: /mnt/10.0.2.2/
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+      become: yes
+
+    - name: Create dir
       file:
         path: /mnt/10.0.2.5/
         state: directory
