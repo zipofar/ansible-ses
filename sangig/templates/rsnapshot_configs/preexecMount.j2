@@ -25,7 +25,7 @@ function initArguments($argv)
         'vers'      =>  $argv[6] ?? null,
         ];
     } else {
-        throw new \Exception ("Action $action not defined");
+        throw new \Exception ("Action $action not defined on mnt {$options['mnt']}");
     }
     $optionsHasNull = array_filter($options, function ($item) {
         return $item === null || $item === '';

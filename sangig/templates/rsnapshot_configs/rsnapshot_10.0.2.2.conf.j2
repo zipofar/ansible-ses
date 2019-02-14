@@ -7,17 +7,17 @@ cmd_rm		/bin/rm
 cmd_rsync	/usr/bin/rsync
 cmd_logger	/usr/bin/logger
 
-cmd_preexec	/root/preexecMount mount {{ 10_0_2_2_mnt }} {{ 10_0_2_2_opt }}
-cmd_postexec /root/postexecUmount umount {{ 10_0_2_2_mnt }}
+cmd_preexec	/root/preexecMount mount {{ A_MNT }} {{ A_OPT }}
+cmd_postexec	/root/preexecMount umount {{ A_MNT }}
 
-retain	daily	1
+retain	daily	2
 
 verbose	2
 loglevel	3
 logfile	/var/rsnapshot.log
 
-lockfile	/var/run/rsnapshot.pid
+lockfile	/var/run/rsnapshot{{ A_PID }}.pid
 
 # LOCALHOST
-backup	{{ 10_0_2_2_mnt }}	backup/
+backup	{{ A_MNT }}	backup/
 

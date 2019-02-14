@@ -1,8 +1,15 @@
-10_0_2_2_mnt: /mnt/10.0.2.2
-10_0_2_2_opt: DESCTOP support eeprom 1.0
+A_MNT: /mnt/10.0.2.2
+A_OPT: DESCTOP support eeprom 1.0
+A_PID: 2
 
-10_0_2_5_mnt: /mnt/10.0.2.5
-10_0_2_5_opt: DESCTOP support eeprom 1.0
+B_MNT: /mnt/10.0.2.5
+B_OPT: DESCTOP support eeprom 1.0
+B_PID: 5
 
-sangig06_mnt: /mnt/sangig06
-sangig06_opt: Desctop support eeprom 2.1
+C_MNT: /mnt/sangig06
+C_OPT: Desktop support eeprom 2.1
+C_PID: 3
+
+D_MNT: /mnt/10.0.2.6
+D_OPT: desktop support eeprom 1.0
+D_PID: 4
