@@ -1,0 +1,40 @@
+- hosts: ooi 
+  gather_facts: no
+  tasks:
+
+    - name: copy rsnapshot 10.0.2.2
+      template:
+        src: templates/rsnapshot_configs/rsnapshot_10.0.2.2.conf.j2
+        dest: /root/rsnapshot_10.0.2.2.conf
+        owner: root
+        group: root
+        mode: 0644
+      become: yes
+
+    - name: Create dir
+      file:
+        path: /mnt/10.0.2.2/
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+      become: yes
+
+    - name: Copy cron task 
+      template:
+        src: templates/rsnapshot_configs/rsnapshot.j2
+        dest: /etc/cron.d/rsnapshot
+        owner: root
+        group: root
+        mode: 0644
+      become: yes
+
+    - name: Copy Pre Exec Mount
+      template:
+        src: templates/rsnapshot_configs/preexecMount.j2
+        dest: /root/preexecMount
+        owner: root
+        group: root
+        mode: 0755
+      become: yes
+

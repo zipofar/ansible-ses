@@ -1,7 +1,17 @@
 - hosts: sangig 
   gather_facts: no
   tasks:
-    - name: copy rsnapshot sangig06
+
+    - name: copy rsnapshot 10.0.2.2
+      template:
+        src: templates/rsnapshot_configs/rsnapshot_10.0.2.2.conf.j2
+        dest: /root/rsnapshot_10.0.2.2.conf
+        owner: root
+        group: root
+        mode: 0644
+      become: yes
+
+    - name: copy rsnapshot 10.0.2.3 (sangig06)
       template:
         src: templates/rsnapshot_configs/rsnapshot_sangig06.conf.j2
         dest: /root/rsnapshot_sangig06.conf
@@ -10,10 +20,10 @@
         mode: 0644
       become: yes
 
-    - name: copy rsnapshot 10.0.2.2
+    - name: copy rsnapshot 10.0.2.4 
       template:
-        src: templates/rsnapshot_configs/rsnapshot_10.0.2.2.conf.j2
-        dest: /root/rsnapshot_10.0.2.2.conf
+        src: templates/rsnapshot_configs/rsnapshot_10.0.2.4.conf.j2
+        dest: /root/rsnapshot_10.0.2.4.conf
         owner: root
         group: root
         mode: 0644
@@ -57,6 +67,15 @@
 
     - name: Create dir
       file:
+        path: /mnt/10.0.2.2/
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+      become: yes
+
+    - name: Create dir
+      file:
         path: /mnt/sangig06/
         state: directory
         owner: root
@@ -66,7 +85,7 @@
 
     - name: Create dir
       file:
-        path: /mnt/10.0.2.2/
+        path: /mnt/10.0.2.4/
         state: directory
         owner: root
         group: root
