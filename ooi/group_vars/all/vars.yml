@@ -1,1 +1,8 @@
+A_MNT: /mnt/10.0.3.2
+A_OPT: DESKTOP support eeprom 1.0
+A_PID: 2
 
+hosts_list:
+  - 10.0.3.2
+
+pathToBackupDir: /var/ooi_backup/

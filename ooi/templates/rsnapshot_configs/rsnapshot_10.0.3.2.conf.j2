@@ -1,6 +1,6 @@
 config_version	1.2
 
-snapshot_root	/var/sangig_backup/
+snapshot_root	{{ pathToBackupDir }}
 
 cmd_cp		/bin/cp
 cmd_rm		/bin/rm
@@ -10,7 +10,8 @@ cmd_logger	/usr/bin/logger
 cmd_preexec	/root/preexecMount mount {{ A_MNT }} {{ A_OPT }}
 cmd_postexec	/root/preexecMount umount {{ A_MNT }}
 
-retain	daily	2
+retain	daily	5
+retain	monthly	6
 
 verbose	2
 loglevel	3

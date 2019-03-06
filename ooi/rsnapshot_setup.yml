@@ -2,23 +2,25 @@
   gather_facts: no
   tasks:
 
-    - name: copy rsnapshot 10.0.2.2
+    - name: copy rsnapshot config
       template:
-        src: templates/rsnapshot_configs/rsnapshot_10.0.2.2.conf.j2
-        dest: /root/rsnapshot_10.0.2.2.conf
+        src: "templates/rsnapshot_configs/rsnapshot_{{ item }}.conf.j2"
+        dest: "/root/rsnapshot_{{ item }}.conf"
         owner: root
         group: root
         mode: 0644
       become: yes
+      loop: "{{ hosts_list }}"
 
-    - name: Create dir
+    - name: Create mount dir
       file:
-        path: /mnt/10.0.2.2/
+        path: "/mnt/{{ item }}/"
         state: directory
         owner: root
         group: root
         mode: 0755
       become: yes
+      loop: "{{ hosts_list }}"
 
     - name: Copy cron task 
       template:
