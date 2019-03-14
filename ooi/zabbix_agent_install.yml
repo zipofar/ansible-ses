@@ -1,0 +1,17 @@
+- hosts: all 
+  tasks:
+    - name: Install zabbix-agent
+      apt:
+        name: zabbix-agent
+        state: present
+        update_cache: yes
+      become: yes
+
+    - name: copy zabbix config
+      template:
+        src: templates/zabbix/zabbix_agentd.conf.j2
+        dest: /etc/zabbix/zabbix_agentd.conf
+        owner: root
+        group: root
+        mode: 0644
+      become: yes

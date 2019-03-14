@@ -16,6 +16,9 @@ rsnapshot_setup:
 php_install:
 	ansible-playbook php7.2_install.yml -i inventory -vv
 
+zabbix-agent_install:
+	ansible-playbook zabbix_agent_install.yml -i inventory -vv
+
 rsnapshot_full: rsnapshot_install rsnapshot_setup php_install
 
 samba:
