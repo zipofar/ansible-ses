@@ -1,0 +1,16 @@
+- hosts: radiac
+  tasks:
+    - name: add php repository
+      apt_repository:
+        repo: 'ppa:ondrej/php'
+        codename: xenial
+      become: yes
+
+    - name: install php7.2
+      apt: name={{ item  }} state=present update_cache=yes
+      with_items:
+        - php7.2-cli
+        - php7.2-common
+        - php7.2-mbstring
+        - php7.2-gd
+      become: yes

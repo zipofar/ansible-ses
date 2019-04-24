@@ -1,0 +1,42 @@
+- hosts: radiac
+  tasks:
+    - name: install samba
+      apt: name=samba state=present update_cache=yes
+      become: yes
+
+    - name: install samba-common
+      apt: name=samba-common state=present
+      become: yes
+
+    - name: install system-config-samba
+      apt: name=system-config-samba state=present
+      become: yes
+
+    - name: install cifs-utils
+      apt: name=cifs-utils state=present
+      become: yes
+
+    - name: create dir /var/samba/share_lab
+      file:
+        path: /var/samba/share_lab
+        state: directory
+        owner: nobody
+        group: nogroup
+        mode: 0775
+        recurse: yes
+      become: yes
+
+    - name: copy smb.conf to /etc/samba/
+      template:
+        src: templates/samba_configs/smb.conf.j2
+        dest: /etc/samba/smb.conf
+        owner: root
+        group: root
+        mode: 0644
+      become: yes
+
+    - name: restart samba
+      service:
+        name: smbd
+        state: restarted
+      become: yes

@@ -1,0 +1,51 @@
+- hosts: radiac
+  gather_facts: no
+  tasks:
+
+    - name: Create mount dir
+      file:
+        path: "/root/{{ item }}/"
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+      become: yes
+      loop: "{{ dirs_list }}"
+
+    - name: copy rsnapshot config
+      template:
+        src: "templates/rsnapshot_configs/rsnapshot_{{ item }}.conf.j2"
+        dest: "/root/rsnapshot_{{ item }}.conf"
+        owner: root
+        group: root
+        mode: 0644
+      become: yes
+      loop: "{{ hosts_list }}"
+
+    - name: Create mount dir
+      file:
+        path: "/mnt/{{ item }}/"
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+      become: yes
+      loop: "{{ hosts_list }}"
+
+    - name: Copy cron task
+      template:
+        src: templates/rsnapshot_configs/rsnapshot.j2
+        dest: /etc/cron.d/rsnapshot
+        owner: root
+        group: root
+        mode: 0644
+      become: yes
+
+    - name: Copy Pre Exec Mount
+      template:
+        src: templates/rsnapshot_configs/preexecMount.j2
+        dest: /root/preexecMount
+        owner: root
+        group: root
+        mode: 0755
+      become: yes
