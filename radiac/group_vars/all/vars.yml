@@ -1,0 +1,37 @@
+A_MNT: /mnt/10.0.1.200/desktop
+A_OPT: DESKTOP support eeprom 1.0
+A_PID: 2001
+
+B_MNT: /mnt/10.0.1.200/doc
+B_OPT: DOC support eeprom 1.0
+B_PID: 2002
+
+C_MNT: /mnt/10.0.1.200/mail
+C_OPT: MAIL support eeprom 1.0
+C_PID: 2003
+
+D_MNT: /mnt/10.0.1.200/rg
+D_OPT: RG support eeprom 1.0
+D_PID: 2004
+
+E_MNT: /mnt/10.0.1.202/desktop
+E_OPT: DESKTOP support eeprom 1.0
+E_PID: 2021
+
+F_MNT: /mnt/10.0.1.202/rg
+F_OPT: RG support eeprom 1.0
+F_PID: 2024
+
+hosts_list:
+  - 10.0.1.200/desktop
+  - 10.0.1.200/doc
+  - 10.0.1.200/mail
+  - 10.0.1.200/rg
+  - 10.0.1.202/desktop
+  - 10.0.1.202/rg
+
+dirs_list:
+  - rsnapshot_10.0.1.200
+  - rsnapshot_10.0.1.202
+
+pathToBackupDir: /var/radiac_backup/
