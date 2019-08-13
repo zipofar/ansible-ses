@@ -1,4 +1,4 @@
-- hosts: ooi
+- hosts: mail
   tasks:
     - name: install samba
       apt: name=samba state=present update_cache=yes
@@ -16,9 +16,9 @@
       apt: name=cifs-utils state=present
       become: yes
 
-    - name: create dir /var/samba/share_sangig
+    - name: create dir for fax incoming
       file:
-        path: /var/samba/ooi_share
+        path: /var/samba/fax_glav
         state: directory
         owner: nobody
         group: nogroup

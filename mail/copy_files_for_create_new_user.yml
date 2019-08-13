@@ -1,0 +1,16 @@
+- hosts: mail
+  tasks:
+    - name: copy script
+      copy:
+        src: templates/send_new_file_to_email.sh
+        dest: /home/ingprog
+        owner: ingprog
+        group: ingprog
+        mode: 0744
+      become: yes
+
+    - name: Create cron job
+      cron:
+        name: "Start notifer"
+        special_time: reboot
+        job: "/home/ingprog/send_new_file_to_email.sh"

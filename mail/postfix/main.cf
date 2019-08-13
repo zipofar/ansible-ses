@@ -1,0 +1,40 @@
+# See /usr/share/postfix/main.cf.dist for a commented, more complete version
+
+
+smtpd_banner = $myhostname ESMTP $mail_name (Ubuntu)
+biff = no
+
+mydomain = arhgsen.atnet.ru
+myhostname = ubuntu_mail.arhgsen.atnet.ru
+
+mydestination =
+myorigin = $mydomain
+mynetworks = 127.0.0.0/8 192.168.0.0/24
+
+# Virtual Domains
+
+virtual_mailbox_domains = arhgsen.atnet.ru
+virtual_mailbox_maps = hash:/etc/postfix/virt_recipients
+virtual_alias_maps = hash:/etc/postfix/virt_alias_recipients
+
+# Enable Dovecot
+
+virtual_transport = dovecot
+dovecot_destination_recipient_limit = 1
+
+
+smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
+relayhost = [zion.atnet.ru]
+
+message_size_limit = 50240000
+mailbox_size_limit = 50240000
+virtual_mailbox_limit = 50240000
+
+relay_destination_concurrency_limit = 1
+relay_destination_rate_delay = 30s
+relay_extra_recipient_limit = 5
+
+smtp_destination_concurrency_limit = 1
+smtp_destination_rate_delay = 30s
+smtp_extra_recipient_limit = 5
+

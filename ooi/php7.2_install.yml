@@ -1,4 +1,4 @@
-- hosts: ooi 
+- hosts: ooi
   tasks:
     - name: add php repository
       apt_repository:

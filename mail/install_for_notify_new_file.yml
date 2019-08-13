@@ -1,0 +1,9 @@
+- hosts: mail
+  tasks:
+    - name: install inotify tools
+      apt: name=inotify-tools state=present update_cache=yes
+      become: yes
+
+    - name: install mailuntils
+      apt: name=mailutils state=present update_cache=yes
+      become: yes
