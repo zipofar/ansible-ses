@@ -14,7 +14,11 @@ D_MNT: /mnt/10.0.3.5/mail_new_2018
 D_OPT: MAIL_NEW_2018 support eeprom 1.0
 D_PID: 53
 
+E_MNT: /var/samba/ooi_share/
+E_PID: 54
+
 hosts_list:
+  - share-ooi
   - 10.0.3.2
   - 10.0.3.5/obmen
   - 10.0.3.5/my_doc

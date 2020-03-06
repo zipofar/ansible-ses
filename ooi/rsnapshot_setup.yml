@@ -2,7 +2,7 @@
   gather_facts: no
   tasks:
 
-    - name: Create mount dir
+    - name: Create rsnapshot dir for multiple mounts
       file:
         path: "/root/{{ item }}/"
         state: directory
